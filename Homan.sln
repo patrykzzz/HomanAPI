@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homan.DAL", "Homan.DAL\Homan.DAL.csproj", "{69E82D3B-6FA5-4199-9329-E601D8D011B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homan.BLL", "Homan.BLL\Homan.BLL.csproj", "{5493A846-8ECE-41E8-BBF9-A6399166E32A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homan.API", "Homan.API\Homan.API.csproj", "{A1821881-0689-48D8-89B3-892C72A31A30}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69E82D3B-6FA5-4199-9329-E601D8D011B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69E82D3B-6FA5-4199-9329-E601D8D011B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69E82D3B-6FA5-4199-9329-E601D8D011B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69E82D3B-6FA5-4199-9329-E601D8D011B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5493A846-8ECE-41E8-BBF9-A6399166E32A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5493A846-8ECE-41E8-BBF9-A6399166E32A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5493A846-8ECE-41E8-BBF9-A6399166E32A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5493A846-8ECE-41E8-BBF9-A6399166E32A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1821881-0689-48D8-89B3-892C72A31A30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1821881-0689-48D8-89B3-892C72A31A30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1821881-0689-48D8-89B3-892C72A31A30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1821881-0689-48D8-89B3-892C72A31A30}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {852E173B-A53C-4073-A765-E7D6270D5A5C}
+	EndGlobalSection
+EndGlobal
