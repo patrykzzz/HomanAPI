@@ -1,7 +1,8 @@
 ﻿using System;
-using Homan.API.Factories.Abstract;
+using AutoMapper;
 using Homan.API.Models;
 using Homan.BLL.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homan.API.Controllers
@@ -10,21 +11,21 @@ namespace Homan.API.Controllers
     public class HomeSpaceController : ControllerBase
     {
         private readonly IHomeSpaceService _homeSpaceService;
-        private readonly IHomeSpaceWebModelFactory _homeSpaceWebModelFactory;
 
-        public HomeSpaceController(IHomeSpaceService homeSpaceService, IHomeSpaceWebModelFactory homeSpaceWebModelFactory)
+        public HomeSpaceController(IHomeSpaceService homeSpaceService)
         {
             _homeSpaceService = homeSpaceService;
-            _homeSpaceWebModelFactory = homeSpaceWebModelFactory;
         }
 
+        [Authorize]
         [HttpGet("api/homespaces/{id}")]
-        public ActionResult<HomeSpaceWebModel> Get(Guid id)
+        public IActionResult Get(Guid id)
         {
             var result = _homeSpaceService.GetHomeSpace(id);
             if (result.Succeeded)
             {
-                return Ok(_homeSpaceWebModelFactory.Create(result.Data));
+                var model = Mapper.Map<HomeSpaceWebModel>(result.Data);
+                return Ok(model);
             }
             return NotFound();
         }

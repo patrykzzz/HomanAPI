@@ -26,7 +26,7 @@ namespace Homan.BLL.Services
                 var model = _homeSpaceFactory.Create(entity);
                 return Result<HomeSpaceModel>.Success(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Result<HomeSpaceModel>.Fail();
             }
