@@ -10,12 +10,10 @@ namespace Homan.API.Controllers
 {
     public class AuthorizationController : Controller
     {
-        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
 
-        public AuthorizationController(IConfiguration configuration, IUserService userService)
+        public AuthorizationController(IUserService userService)
         {
-            _configuration = configuration;
             _userService = userService;
         }
 

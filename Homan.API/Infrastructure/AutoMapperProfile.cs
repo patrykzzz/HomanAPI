@@ -4,9 +4,9 @@ using Homan.BLL.Models;
 
 namespace Homan.API.Infrastructure
 {
-    public class AutoMapperSetup : Profile
+    public class AutoMapperProfile : Profile
     {
-        public AutoMapperSetup()
+        public AutoMapperProfile()
         {
             CreateMap<LoginRequestWebModel, LoginRequestModel>();
             CreateMap<RegistrationRequestWebModel, RegistrationRequestModel>();

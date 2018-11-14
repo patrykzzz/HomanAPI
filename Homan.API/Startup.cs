@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using AutoMapper;
-using Homan.API.Infrastructure;
 using Homan.BLL.Infrastructure;
 using Homan.DAL;
 using Homan.DAL.Entities;
@@ -70,7 +69,8 @@ namespace Homan.API
 
             Mapper.Initialize(cfg =>
             {
-                cfg.AddProfile<AutoMapperSetup>();
+                cfg.AddProfile<Infrastructure.AutoMapperProfile>();
+                cfg.AddProfile<AutoMapperProfile>();
             });
 
             services.AddCors();
