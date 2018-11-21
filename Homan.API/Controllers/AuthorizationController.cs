@@ -4,7 +4,6 @@ using Homan.BLL.Models;
 using Homan.BLL.Services.Abstract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace Homan.API.Controllers
 {
@@ -24,9 +23,14 @@ namespace Homan.API.Controllers
             var model = Mapper.Map<RegistrationRequestModel>(webModel);
             var result = _userService.Register(model);
 
-            if (result.Succeeded)
+            if (result == RegistrationResponseType.Ok)
             {
                 return Ok();
+            }
+
+            if (result == RegistrationResponseType.EmailIsAlreadyTaken)
+            {
+                return Conflict();
             }
             return BadRequest();
         }

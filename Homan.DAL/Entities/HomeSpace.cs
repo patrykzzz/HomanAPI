@@ -10,6 +10,6 @@ namespace Homan.DAL.Entities
         public string Description { get; set; }
 
         public virtual ICollection<UserInHomeSpace> HomeSpaceUsers { get; set; }
-        public virtual ICollection<HomeSpaceItem> HomeSpaceItems { get; set; }
+        public virtual ICollection<HomeSpaceItemList> HomeSpaceItems { get; set; }
     }
 }

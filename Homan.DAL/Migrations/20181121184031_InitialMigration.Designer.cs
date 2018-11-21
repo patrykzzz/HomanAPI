@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homan.DAL.Migrations
 {
     [DbContext(typeof(HomanContext))]
-    [Migration("20181101165758_InitialMigration")]
+    [Migration("20181121184031_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,28 @@ namespace Homan.DAL.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<Guid>("HomeSpaceListId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HomeSpaceListId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HomeSpaceItems");
+                });
+
+            modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItemList", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
                     b.Property<Guid>("HomeSpaceId");
 
                     b.Property<string>("Name");
@@ -58,7 +80,7 @@ namespace Homan.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HomeSpaceItems");
+                    b.ToTable("HomeSpaceItemLists");
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.User", b =>
@@ -140,6 +162,19 @@ namespace Homan.DAL.Migrations
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItem", b =>
+                {
+                    b.HasOne("Homan.DAL.Entities.HomeSpaceItemList", "HomeSpaceList")
+                        .WithMany("HomeSpaceItems")
+                        .HasForeignKey("HomeSpaceListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Homan.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItemList", b =>
                 {
                     b.HasOne("Homan.DAL.Entities.HomeSpace", "HomeSpace")
                         .WithMany("HomeSpaceItems")

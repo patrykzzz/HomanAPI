@@ -5,7 +5,7 @@ namespace Homan.BLL.Services.Abstract
 {
     public interface IUserService
     {
-        Result Register(RegistrationRequestModel model);
+        RegistrationResponseType Register(RegistrationRequestModel model);
         Result<LoginResponseModel> Login(LoginRequestModel model);
     }
 }

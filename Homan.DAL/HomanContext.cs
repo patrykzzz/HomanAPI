@@ -26,6 +26,7 @@ namespace Homan.DAL
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<HomeSpace> HomeSpaces { get; set; }
         public DbSet<HomeSpaceItem> HomeSpaceItems { get; set; }
+        public DbSet<HomeSpaceItemList> HomeSpaceItemLists { get; set; }
         public DbSet<UserInHomeSpace> UserInHomeSpaces { get; set; }
     }
 }
