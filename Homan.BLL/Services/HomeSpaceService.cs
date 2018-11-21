@@ -1,5 +1,5 @@
 ﻿using System;
-using Homan.BLL.Factories;
+using AutoMapper;
 using Homan.BLL.Models;
 using Homan.BLL.Services.Abstract;
 using Homan.BLL.Utilities;
@@ -10,12 +10,10 @@ namespace Homan.BLL.Services
     internal class HomeSpaceService : IHomeSpaceService
     {
         private readonly IHomeSpaceRepository _homeSpaceRepository;
-        private readonly IHomeSpaceFactory _homeSpaceFactory;
 
-        public HomeSpaceService(IHomeSpaceRepository homeSpaceRepository, IHomeSpaceFactory homeSpaceFactory)
+        public HomeSpaceService(IHomeSpaceRepository homeSpaceRepository)
         {
             _homeSpaceRepository = homeSpaceRepository;
-            _homeSpaceFactory = homeSpaceFactory;
         }
 
         public Result<HomeSpaceModel> GetHomeSpace(Guid id)
@@ -23,10 +21,10 @@ namespace Homan.BLL.Services
             try
             {
                 var entity = _homeSpaceRepository.GetById(id);
-                var model = _homeSpaceFactory.Create(entity);
+                var model = Mapper.Map<HomeSpaceModel>(entity);
                 return Result<HomeSpaceModel>.Success(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Result<HomeSpaceModel>.Fail();
             }

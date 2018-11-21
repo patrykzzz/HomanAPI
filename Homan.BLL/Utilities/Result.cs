@@ -21,4 +21,24 @@
             return new Result<T>(null, false);
         }
     }
+
+    public class Result
+    {
+        public bool Succeeded { get; set; }
+
+        private Result(bool succeeded = true)
+        {
+            Succeeded = succeeded;
+        }
+
+        public static Result Success()
+        {
+            return new Result();
+        }
+
+        public static Result Fail()
+        {
+            return new Result(false);
+        }
+    }
 }
