@@ -4,14 +4,16 @@ using Homan.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Homan.DAL.Migrations
 {
     [DbContext(typeof(HomanContext))]
-    partial class HomanContextModelSnapshot : ModelSnapshot
+    [Migration("20181128181930_AddOwnerToHomeSpace")]
+    partial class AddOwnerToHomeSpace
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

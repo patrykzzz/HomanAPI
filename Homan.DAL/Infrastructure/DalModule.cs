@@ -9,6 +9,7 @@ namespace Homan.DAL.Infrastructure
         public static void RegisterDalModule(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IHomeSpaceRepository, HomeSpaceRepository>();
+            serviceCollection.AddTransient<IUnitOfWork, UnitOfWork>();
         }
     }
 }
