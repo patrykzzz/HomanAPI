@@ -18,6 +18,9 @@ namespace Homan.API.Controllers
 
         [HttpPost("api/register")]
         [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(400)]
         public IActionResult Register([FromBody]RegistrationRequestWebModel webModel)
         {
             var model = Mapper.Map<RegistrationRequestModel>(webModel);
@@ -37,6 +40,8 @@ namespace Homan.API.Controllers
 
         [HttpPost("api/login")]
         [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult Login([FromBody]LoginRequestWebModel webModel)
         {
             var model = Mapper.Map<LoginRequestModel>(webModel);

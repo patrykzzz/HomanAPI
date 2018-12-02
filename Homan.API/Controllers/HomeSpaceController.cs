@@ -20,7 +20,14 @@ namespace Homan.API.Controllers
             _homeSpaceService = homeSpaceService;
         }
 
+        /// <summary>
+        /// Gets a Home Space by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("api/homespaces/{id}")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
         public IActionResult Get(Guid id)
         {
             var result = _homeSpaceService.GetHomeSpace(id);
@@ -32,7 +39,13 @@ namespace Homan.API.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Gets all Home Spaces by current user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("api/homespaces")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
         public IActionResult GetByCurrentUser()
         {
             var userId = HttpContext.User.GetUserId();
@@ -45,7 +58,14 @@ namespace Homan.API.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Creates a Home Space by current user
+        /// </summary>
+        /// <param name="webModel"></param>
+        /// <returns></returns>
         [HttpPost("api/homespaces")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
         public IActionResult Create([FromBody] HomeSpaceWebModel webModel)
         {
             var model = Mapper.Map<HomeSpaceModel>(webModel);
