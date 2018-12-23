@@ -39,6 +39,7 @@ namespace Homan.BLL.Services
                     {
                         return RegistrationResponseType.Ok;
                     }
+                    return RegistrationResponseType.Failed;
                 }
                 return RegistrationResponseType.EmailIsAlreadyTaken;
             }

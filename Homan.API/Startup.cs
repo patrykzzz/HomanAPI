@@ -54,7 +54,7 @@ namespace Homan.API
 
             var builder = services.AddIdentityCore<User>(opt =>
             {
-                opt.Password.RequiredLength = 7;
+                opt.Password.RequiredLength = 4;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireLowercase = false;
