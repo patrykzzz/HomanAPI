@@ -41,7 +41,7 @@ namespace Homan.BLL.Tests.Services
 
             // Assert
             Assert.Equal(entity.Id, result.Data.Id);
-            Assert.Equal(entity.Description, result.Data.Description);
+            Assert.Equal(entity.City, result.Data.City);
             Assert.Equal(entity.Name, result.Data.Name);
         }
 
