@@ -10,5 +10,6 @@ namespace Homan.BLL.Services.Abstract
         Result<HomeSpaceModel> GetHomeSpace(Guid id);
         Result Create(HomeSpaceModel homeSpace, Guid userId);
         Result<IEnumerable<HomeSpaceModel>> GetHomeSpacesByUser(Guid userId);
+        InvitationResultModel Invite(HomeSpaceInvitationModel model);
     }
 }

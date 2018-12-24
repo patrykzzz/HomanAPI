@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Homan.DAL.Entities;
 using Homan.DAL.Repositories.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace Homan.DAL.Repositories
 {
@@ -28,10 +29,20 @@ namespace Homan.DAL.Repositories
 
         public IEnumerable<HomeSpace> GetAllByUser(Guid userId)
         {
-            var joinedHomeSpaces =
-                _homanContext.HomeSpaces.Where(x => x.HomeSpaceUsers.Select(y => y.UserId)
-                    .Contains(userId));
-            return _homanContext.HomeSpaces.Where(x => x.OwnerId == userId)
+            var joinedHomeSpaces = _homanContext.HomeSpaces
+                    .Include(x => x.HomeSpaceUsers)
+                    .ThenInclude(x => x.User)
+                    .Where(x => x.HomeSpaceUsers.Select(y => y.UserId)
+                    .Contains(userId))
+                    .ToList();
+
+            var ownedHomeSpaces = _homanContext.HomeSpaces
+                .Include(x => x.HomeSpaceUsers)
+                .ThenInclude(x => x.User)
+                .Where(x => x.OwnerId == userId)
+                .ToList();
+
+            return ownedHomeSpaces
                 .Union(joinedHomeSpaces)
                 .ToList();
         }

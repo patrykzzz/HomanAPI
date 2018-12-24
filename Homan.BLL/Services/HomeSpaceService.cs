@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Homan.BLL.Models;
 using Homan.BLL.Services.Abstract;
 using Homan.BLL.Utilities;
 using Homan.DAL.Entities;
 using Homan.DAL.Repositories.Abstract;
+using Microsoft.AspNetCore.Identity;
 
 namespace Homan.BLL.Services
 {
@@ -13,11 +15,14 @@ namespace Homan.BLL.Services
     {
         private readonly IHomeSpaceRepository _homeSpaceRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public HomeSpaceService(IHomeSpaceRepository homeSpaceRepository, IUnitOfWork unitOfWork)
+        public HomeSpaceService(IHomeSpaceRepository homeSpaceRepository, IUnitOfWork unitOfWork,
+            UserManager<User> userManager)
         {
             _homeSpaceRepository = homeSpaceRepository;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public Result<HomeSpaceModel> GetHomeSpace(Guid id)
@@ -62,6 +67,40 @@ namespace Homan.BLL.Services
             catch (Exception )
             {
                 return Result<IEnumerable<HomeSpaceModel>>.Fail();
+            }
+        }
+
+        public InvitationResultModel Invite(HomeSpaceInvitationModel model)
+        {
+            try
+            {
+                var homeSpace = _homeSpaceRepository.GetAllByUser(model.InvitingUserId)
+                    .SingleOrDefault(x => x.Id == model.HomeSpaceId);
+                var user = _userManager.FindByEmailAsync(model.UserEmail)
+                    .Result;
+                if (user == null)
+                {
+                    return InvitationResultModel.NoUserFound;
+                }
+
+                if (homeSpace != null)
+                {
+                    if (homeSpace.HomeSpaceUsers.Select(x => x.User).Contains(user) || homeSpace.OwnerId == user.Id)
+                    {
+                        return InvitationResultModel.UserAlreadyInHomeSpace;
+                    }
+                    homeSpace.HomeSpaceUsers.Add(new UserInHomeSpace
+                    {
+                        UserId = user.Id
+                    });
+                    _unitOfWork.SaveChanges();
+                    return InvitationResultModel.Succeeded;
+                }
+                return InvitationResultModel.Failed;
+            }
+            catch (Exception)
+            {
+                return InvitationResultModel.Failed;
             }
         }
     }

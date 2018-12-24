@@ -23,6 +23,11 @@ namespace Homan.API.Controllers
         [ProducesResponseType(400)]
         public IActionResult Register([FromBody]RegistrationRequestWebModel webModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var model = Mapper.Map<RegistrationRequestModel>(webModel);
             var result = _userService.Register(model);
 
@@ -44,6 +49,11 @@ namespace Homan.API.Controllers
         [ProducesResponseType(400)]
         public IActionResult Login([FromBody]LoginRequestWebModel webModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var model = Mapper.Map<LoginRequestModel>(webModel);
             var result = _userService.Login(model);
 

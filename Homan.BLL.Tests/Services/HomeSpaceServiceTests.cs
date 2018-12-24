@@ -3,6 +3,7 @@ using AutoFixture;
 using Homan.BLL.Services;
 using Homan.DAL.Entities;
 using Homan.DAL.Repositories.Abstract;
+using Microsoft.AspNetCore.Identity;
 using Moq;
 using Xunit;
 
@@ -20,8 +21,10 @@ namespace Homan.BLL.Tests.Services
         {
             _homeSpaceRepository = new Mock<IHomeSpaceRepository>();
             _unitOfWork = new Mock<IUnitOfWork>();
+            var userStore = new Mock<IUserStore<User>>();
+            var userManager = new UserManager<User>(userStore.Object, null, null, null, null, null, null, null, null);
             _fixture = new Fixture();
-            _target = new HomeSpaceService(_homeSpaceRepository.Object, _unitOfWork.Object);
+            _target = new HomeSpaceService(_homeSpaceRepository.Object, _unitOfWork.Object, userManager);
 
             _fixture.Customize<HomeSpace>(cfg => cfg
                 .Without(hs => hs.HomeSpaceItems)

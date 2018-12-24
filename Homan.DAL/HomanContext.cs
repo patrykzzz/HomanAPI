@@ -19,6 +19,11 @@ namespace Homan.DAL
                     table.UserId
                 });
 
+            modelBuilder.Entity<HomeSpace>().HasMany(s => s.HomeSpaceUsers)
+                .WithOne(s => s.HomeSpace);
+            modelBuilder.Entity<HomeSpace>().HasMany(s => s.HomeSpaceItems)
+                .WithOne(s => s.HomeSpace);
+
             base.OnModelCreating(modelBuilder);
         }
 

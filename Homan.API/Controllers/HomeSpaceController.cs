@@ -27,9 +27,14 @@ namespace Homan.API.Controllers
         /// <returns></returns>
         [HttpGet("api/homespaces/{id}")]
         [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         public IActionResult Get(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var result = _homeSpaceService.GetHomeSpace(id);
             if (result.Succeeded)
             {
@@ -54,7 +59,6 @@ namespace Homan.API.Controllers
             {
                 return Ok(result.Data);
             }
-
             return BadRequest();
         }
 
@@ -68,6 +72,10 @@ namespace Homan.API.Controllers
         [ProducesResponseType(200)]
         public IActionResult Create([FromBody] HomeSpaceWebModel webModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var model = Mapper.Map<HomeSpaceModel>(webModel);
             var userId = HttpContext.User.GetUserId();
             var result = _homeSpaceService.Create(model, userId);
@@ -75,7 +83,41 @@ namespace Homan.API.Controllers
             {
                 return Ok();
             }
+            return BadRequest();
+        }
 
+        /// <summary>
+        /// Invites a user with given email to the Home Space
+        /// </summary>
+        /// <param name="webModel"></param>
+        /// <returns></returns>
+        [HttpPost("api/homespaces/invite")]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
+        public IActionResult Invite([FromBody] HomeSpaceInvitationWebModel webModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var model = Mapper.Map<HomeSpaceInvitationModel>(webModel);
+            model.InvitingUserId = HttpContext.User.GetUserId();
+            var result = _homeSpaceService.Invite(model);
+            if (result == InvitationResultModel.Succeeded)
+            {
+                return Ok();
+            }
+            if (result == InvitationResultModel.NoUserFound)
+            {
+                return NotFound();
+            }
+
+            if (result == InvitationResultModel.UserAlreadyInHomeSpace)
+            {
+                return Conflict();
+            }
             return BadRequest();
         }
     }
