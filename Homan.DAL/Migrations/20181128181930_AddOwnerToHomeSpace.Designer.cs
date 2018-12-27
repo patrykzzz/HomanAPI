@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homan.DAL.Migrations
 {
     [DbContext(typeof(HomanContext))]
-    [Migration("20181101165758_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20181128181930_AddOwnerToHomeSpace")]
+    partial class AddOwnerToHomeSpace
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,16 +30,38 @@ namespace Homan.DAL.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("UserId");
+                    b.Property<Guid>("OwnerId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("HomeSpaces");
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<Guid>("HomeSpaceListId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HomeSpaceListId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HomeSpaceItems");
+                });
+
+            modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItemList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -58,7 +80,7 @@ namespace Homan.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HomeSpaceItems");
+                    b.ToTable("HomeSpaceItemLists");
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.User", b =>
@@ -134,12 +156,26 @@ namespace Homan.DAL.Migrations
 
             modelBuilder.Entity("Homan.DAL.Entities.HomeSpace", b =>
                 {
-                    b.HasOne("Homan.DAL.Entities.User")
-                        .WithMany("UserHomeSpaces")
-                        .HasForeignKey("UserId");
+                    b.HasOne("Homan.DAL.Entities.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItem", b =>
+                {
+                    b.HasOne("Homan.DAL.Entities.HomeSpaceItemList", "HomeSpaceList")
+                        .WithMany("HomeSpaceItems")
+                        .HasForeignKey("HomeSpaceListId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Homan.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItemList", b =>
                 {
                     b.HasOne("Homan.DAL.Entities.HomeSpace", "HomeSpace")
                         .WithMany("HomeSpaceItems")

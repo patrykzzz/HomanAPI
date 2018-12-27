@@ -11,6 +11,8 @@ namespace Homan.API.Infrastructure
             CreateMap<LoginRequestWebModel, LoginRequestModel>();
             CreateMap<RegistrationRequestWebModel, RegistrationRequestModel>();
             CreateMap<HomeSpaceModel, HomeSpaceWebModel>();
+            CreateMap<HomeSpaceWebModel, HomeSpaceModel>()
+                .ForMember(x => x.Id, o => o.Ignore());
             CreateMap<LoginResponseModel, LoginResponseWebModel>();
         }
     }

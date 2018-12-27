@@ -13,13 +13,15 @@ namespace Homan.BLL.Tests.Services
     {
         private readonly HomeSpaceService _target;
         private readonly Mock<IHomeSpaceRepository> _homeSpaceRepository;
+        private readonly Mock<IUnitOfWork> _unitOfWork;
         private readonly IFixture _fixture;
 
         public HomeSpaceServiceTests()
         {
             _homeSpaceRepository = new Mock<IHomeSpaceRepository>();
+            _unitOfWork = new Mock<IUnitOfWork>();
             _fixture = new Fixture();
-            _target = new HomeSpaceService(_homeSpaceRepository.Object);
+            _target = new HomeSpaceService(_homeSpaceRepository.Object, _unitOfWork.Object);
 
             _fixture.Customize<HomeSpace>(cfg => cfg
                 .Without(hs => hs.HomeSpaceItems)

@@ -4,14 +4,16 @@ using Homan.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Homan.DAL.Migrations
 {
     [DbContext(typeof(HomanContext))]
-    partial class HomanContextModelSnapshot : ModelSnapshot
+    [Migration("20181121184031_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,11 +30,11 @@ namespace Homan.DAL.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid>("OwnerId");
+                    b.Property<Guid?>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("HomeSpaces");
                 });
@@ -154,10 +156,9 @@ namespace Homan.DAL.Migrations
 
             modelBuilder.Entity("Homan.DAL.Entities.HomeSpace", b =>
                 {
-                    b.HasOne("Homan.DAL.Entities.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Homan.DAL.Entities.User")
+                        .WithMany("UserHomeSpaces")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.HomeSpaceItem", b =>

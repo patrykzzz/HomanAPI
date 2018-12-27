@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using AutoMapper;
 using Homan.BLL.Infrastructure;
 using Homan.DAL;
@@ -13,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Homan.API
 {
@@ -29,6 +33,19 @@ namespace Homan.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(cfg =>
+            {
+                cfg.SwaggerDoc("v1", new Info
+                {
+                    Title = "Homan API",
+                    Version = "v1"
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                cfg.IncludeXmlComments(xmlPath);
+            });
             
             services.AddDbContext<HomanContext>(options =>
             {
@@ -37,7 +54,7 @@ namespace Homan.API
 
             var builder = services.AddIdentityCore<User>(opt =>
             {
-                opt.Password.RequiredLength = 7;
+                opt.Password.RequiredLength = 4;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireLowercase = false;
@@ -98,6 +115,13 @@ namespace Homan.API
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(cfg =>
+            {
+                cfg.SwaggerEndpoint("swagger/v1/swagger.json", "Homan API v1");
+                cfg.RoutePrefix = string.Empty;
+            });
         }
     }
 }

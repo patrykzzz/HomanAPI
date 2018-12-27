@@ -18,7 +18,7 @@ namespace Homan.BLL.Services
             _userManager = userManager;
             _tokenFactory = tokenFactory;
         }
-        public Result Register(RegistrationRequestModel model)
+        public RegistrationResponseType Register(RegistrationRequestModel model)
         {
             try
             {
@@ -37,14 +37,15 @@ namespace Homan.BLL.Services
 
                     if (result.Succeeded)
                     {
-                        return Result.Success();
+                        return RegistrationResponseType.Ok;
                     }
+                    return RegistrationResponseType.Failed;
                 }
-                return Result.Fail();
+                return RegistrationResponseType.EmailIsAlreadyTaken;
             }
             catch (Exception)
             {
-                return Result.Fail();
+                return RegistrationResponseType.Failed;
             }
         }
 
