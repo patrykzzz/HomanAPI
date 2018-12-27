@@ -46,7 +46,34 @@ namespace Homan.BLL.Services
                 var entity = Mapper.Map<HomeSpace>(homeSpace);
                 entity.OwnerId = userId;
                 entity.Id = Guid.NewGuid();
+                entity.HomeSpaceUsers = new List<UserInHomeSpace>
+                {
+                    new UserInHomeSpace
+                    {
+                        UserId = userId
+                    }
+                };
+
                 _homeSpaceRepository.Add(entity);
+                _unitOfWork.SaveChanges();
+                return Result.Success();
+            }
+            catch (Exception)
+            {
+                return Result.Fail();
+            }
+        }
+
+        public Result RemoveHomeSpace(Guid homeSpaceId, Guid requestingUserId)
+        {
+            try
+            {
+                var homeSpace = _homeSpaceRepository.GetById(homeSpaceId);
+                if(homeSpace.OwnerId != requestingUserId)
+                {
+                    return Result.Fail();
+                }
+                _homeSpaceRepository.Remove(homeSpace);
                 _unitOfWork.SaveChanges();
                 return Result.Success();
             }
@@ -64,7 +91,7 @@ namespace Homan.BLL.Services
                 var model = Mapper.Map<IEnumerable<HomeSpaceModel>>(entities);
                 return Result<IEnumerable<HomeSpaceModel>>.Success(model);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return Result<IEnumerable<HomeSpaceModel>>.Fail();
             }
@@ -101,6 +128,32 @@ namespace Homan.BLL.Services
             catch (Exception)
             {
                 return InvitationResultModel.Failed;
+            }
+        }
+
+        public Result RemoveUser(Guid homeSpaceId, Guid userToRemoveId, Guid requestingUserId)
+        {
+            try
+            {
+                var homeSpace = _homeSpaceRepository.GetById(homeSpaceId);
+                if (homeSpace.OwnerId != requestingUserId)
+                {
+                    return Result.Fail();
+                }
+
+                if (userToRemoveId == requestingUserId)
+                {
+                    return Result.Fail();
+                }
+
+                var user = homeSpace.HomeSpaceUsers.Single(x => x.UserId == userToRemoveId);
+                homeSpace.HomeSpaceUsers.Remove(user);
+                _unitOfWork.SaveChanges();
+                return Result.Success();
+            }
+            catch (Exception)
+            {
+                return Result.Fail();
             }
         }
     }

@@ -19,6 +19,9 @@ namespace Homan.DAL.Repositories
         public HomeSpace GetById(Guid id)
         {
             return _homanContext.HomeSpaces
+                .Include(x => x.HomeSpaceItems)
+                .Include(x => x.HomeSpaceUsers)
+                .ThenInclude(x => x.User)
                 .First(x => x.Id == id);
         }
 
@@ -27,24 +30,19 @@ namespace Homan.DAL.Repositories
             _homanContext.HomeSpaces.Add(homeSpace);
         }
 
+        public void Remove(HomeSpace homeSpace)
+        {
+            _homanContext.HomeSpaces.Remove(homeSpace);
+        }
+
         public IEnumerable<HomeSpace> GetAllByUser(Guid userId)
         {
-            var joinedHomeSpaces = _homanContext.HomeSpaces
+            return _homanContext.HomeSpaces
                     .Include(x => x.HomeSpaceUsers)
                     .ThenInclude(x => x.User)
                     .Where(x => x.HomeSpaceUsers.Select(y => y.UserId)
-                    .Contains(userId))
+                        .Contains(userId))
                     .ToList();
-
-            var ownedHomeSpaces = _homanContext.HomeSpaces
-                .Include(x => x.HomeSpaceUsers)
-                .ThenInclude(x => x.User)
-                .Where(x => x.OwnerId == userId)
-                .ToList();
-
-            return ownedHomeSpaces
-                .Union(joinedHomeSpaces)
-                .ToList();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Homan.DAL.Repositories.Abstract
     {
         HomeSpace GetById(Guid id);
         void Add(HomeSpace homeSpace);
+        void Remove(HomeSpace homeSpace);
         IEnumerable<HomeSpace> GetAllByUser(Guid userId);
     }
 }
