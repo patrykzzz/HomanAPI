@@ -14,6 +14,6 @@ namespace Homan.DAL.Entities
         public virtual User Owner { get; set; }
 
         public virtual ICollection<UserInHomeSpace> HomeSpaceUsers { get; set; }
-        public virtual ICollection<HomeSpaceItemList> HomeSpaceItems { get; set; }
+        public virtual ICollection<HomeSpaceItem> HomeSpaceItems { get; set; }
     }
 }
