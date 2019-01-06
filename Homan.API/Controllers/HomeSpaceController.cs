@@ -27,9 +27,14 @@ namespace Homan.API.Controllers
         /// <returns></returns>
         [HttpGet("api/homespaces/{id}")]
         [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         public IActionResult Get(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var result = _homeSpaceService.GetHomeSpace(id);
             if (result.Succeeded)
             {
@@ -54,7 +59,6 @@ namespace Homan.API.Controllers
             {
                 return Ok(result.Data);
             }
-
             return BadRequest();
         }
 
@@ -64,10 +68,15 @@ namespace Homan.API.Controllers
         /// <param name="webModel"></param>
         /// <returns></returns>
         [HttpPost("api/homespaces")]
+        [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         public IActionResult Create([FromBody] HomeSpaceWebModel webModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             var model = Mapper.Map<HomeSpaceModel>(webModel);
             var userId = HttpContext.User.GetUserId();
             var result = _homeSpaceService.Create(model, userId);
@@ -75,8 +84,95 @@ namespace Homan.API.Controllers
             {
                 return Ok();
             }
+            return StatusCode(500);
+        }
 
+        /// <summary>
+        /// Deletes given Home Space
+        /// </summary>
+        /// <param name="homeSpaceId"></param>
+        /// <returns></returns>
+        [HttpDelete("api/homespaces")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public IActionResult Remove([FromBody] Guid homeSpaceId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var userId = HttpContext.User.GetUserId();
+            var result = _homeSpaceService.RemoveHomeSpace(homeSpaceId, userId);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+
+        /// <summary>
+        /// Invites a user with given email to the Home Space
+        /// </summary>
+        /// <param name="webModel"></param>
+        /// <returns></returns>
+        [HttpPost("api/homespaces/invite")]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
+        public IActionResult Invite([FromBody] HomeSpaceInvitationWebModel webModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var model = Mapper.Map<HomeSpaceInvitationModel>(webModel);
+            model.InvitingUserId = HttpContext.User.GetUserId();
+            var result = _homeSpaceService.Invite(model);
+            if (result == InvitationResultModel.Succeeded)
+            {
+                return Ok();
+            }
+            if (result == InvitationResultModel.NoUserFound)
+            {
+                return NotFound();
+            }
+
+            if (result == InvitationResultModel.UserAlreadyInHomeSpace)
+            {
+                return Conflict();
+            }
             return BadRequest();
+        }
+
+        /// <summary>
+        /// Removes user from given Home Space
+        /// </summary>
+        /// <param name="homeSpaceId"></param>
+        /// <param name="userToRemoveId"></param>
+        /// <param name="webModel"></param>
+        /// <returns></returns>
+        [HttpDelete("api/homespaces/users")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        public IActionResult RemoveUser([FromBody] HomeSpaceUserRemoveWebModel webModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var requestingUserId = HttpContext.User.GetUserId();
+            var result = _homeSpaceService.RemoveUser(webModel.HomeSpaceId, webModel.UserToRemoveId, requestingUserId);
+            if (!result.Succeeded)
+            {
+                return StatusCode(500);
+            }
+            return Ok();
         }
     }
 }
