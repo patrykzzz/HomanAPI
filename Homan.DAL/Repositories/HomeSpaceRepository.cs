@@ -20,6 +20,7 @@ namespace Homan.DAL.Repositories
         {
             return _homanContext.HomeSpaces
                 .Include(x => x.HomeSpaceItems)
+                .ThenInclude(x => x.User)
                 .Include(x => x.HomeSpaceUsers)
                 .ThenInclude(x => x.User)
                 .First(x => x.Id == id);

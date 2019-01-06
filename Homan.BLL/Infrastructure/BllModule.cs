@@ -11,6 +11,7 @@ namespace Homan.BLL.Infrastructure
         public static void RegisterBllModule(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IHomeSpaceService, HomeSpaceService>();
+            serviceCollection.AddTransient<IHomeSpaceItemService, HomeSpaceItemService>();
             serviceCollection.AddTransient<IUserService, UserService>();
             serviceCollection.AddTransient<ITokenFactory, TokenFactory>();
         }

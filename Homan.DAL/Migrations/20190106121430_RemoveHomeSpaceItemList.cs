@@ -11,6 +11,10 @@ namespace Homan.DAL.Migrations
                 name: "FK_HomeSpaceItems_HomeSpaceItemLists_HomeSpaceListId",
                 table: "HomeSpaceItems");
 
+            migrationBuilder.DropForeignKey(
+                name: "FK_HomeSpaceItems_Users_UserId",
+                table: "HomeSpaceItems");
+
             migrationBuilder.DropTable(
                 name: "HomeSpaceItemLists");
 
@@ -23,6 +27,12 @@ namespace Homan.DAL.Migrations
                 name: "IX_HomeSpaceItems_HomeSpaceListId",
                 table: "HomeSpaceItems",
                 newName: "IX_HomeSpaceItems_HomeSpaceId");
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "UserId",
+                table: "HomeSpaceItems",
+                nullable: true,
+                oldClrType: typeof(Guid));
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsCompleted",
@@ -43,12 +53,24 @@ namespace Homan.DAL.Migrations
                 principalTable: "HomeSpaces",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_HomeSpaceItems_Users_UserId",
+                table: "HomeSpaceItems",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_HomeSpaceItems_HomeSpaces_HomeSpaceId",
+                table: "HomeSpaceItems");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_HomeSpaceItems_Users_UserId",
                 table: "HomeSpaceItems");
 
             migrationBuilder.DropColumn(
@@ -68,6 +90,13 @@ namespace Homan.DAL.Migrations
                 name: "IX_HomeSpaceItems_HomeSpaceId",
                 table: "HomeSpaceItems",
                 newName: "IX_HomeSpaceItems_HomeSpaceListId");
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "UserId",
+                table: "HomeSpaceItems",
+                nullable: false,
+                oldClrType: typeof(Guid),
+                oldNullable: true);
 
             migrationBuilder.CreateTable(
                 name: "HomeSpaceItemLists",
@@ -111,6 +140,14 @@ namespace Homan.DAL.Migrations
                 table: "HomeSpaceItems",
                 column: "HomeSpaceListId",
                 principalTable: "HomeSpaceItemLists",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_HomeSpaceItems_Users_UserId",
+                table: "HomeSpaceItems",
+                column: "UserId",
+                principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

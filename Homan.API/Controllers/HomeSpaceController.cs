@@ -5,6 +5,7 @@ using Homan.BLL.Models;
 using Homan.BLL.Services.Abstract;
 using Homan.BLL.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Homan.API.Controllers
@@ -84,7 +85,7 @@ namespace Homan.API.Controllers
             {
                 return Ok();
             }
-            return StatusCode(500);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace Homan.API.Controllers
                 return Ok();
             }
 
-            return StatusCode(500);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         /// <summary>
@@ -170,9 +171,9 @@ namespace Homan.API.Controllers
             var result = _homeSpaceService.RemoveUser(webModel.HomeSpaceId, webModel.UserToRemoveId, requestingUserId);
             if (!result.Succeeded)
             {
-                return StatusCode(500);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return Ok();
+            return Ok();    
         }
     }
 }

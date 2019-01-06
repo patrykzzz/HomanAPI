@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Homan.DAL.Migrations
 {
     [DbContext(typeof(HomanContext))]
-    [Migration("20190106111943_RemoveHomeSpaceItemList")]
+    [Migration("20190106121430_RemoveHomeSpaceItemList")]
     partial class RemoveHomeSpaceItemList
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ namespace Homan.DAL.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid?>("UserId");
 
                     b.HasKey("Id");
 
@@ -155,8 +155,7 @@ namespace Homan.DAL.Migrations
 
                     b.HasOne("Homan.DAL.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Homan.DAL.Entities.UserInHomeSpace", b =>
