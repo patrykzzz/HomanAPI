@@ -15,8 +15,10 @@ namespace Homan.BLL.Infrastructure
                 .ForMember(x => x.HomeSpaceUsers, o => o.MapFrom(s => s.HomeSpaceUsers.Select(y => y.User)));
 
             CreateMap<User, UserModel>();
-            CreateMap<HomeSpaceItem, HomeSpaceItemModel>()
-                .ReverseMap();
+            CreateMap<HomeSpaceItem, HomeSpaceItemModel>();
+
+            CreateMap<HomeSpaceItemModel, HomeSpaceItem>()
+                .ForMember(x => x.CreatedOn, o => o.Ignore());
 
             CreateMap<HomeSpaceModel, HomeSpace>()
                 .ForMember(x => x.OwnerId, o => o.Ignore())

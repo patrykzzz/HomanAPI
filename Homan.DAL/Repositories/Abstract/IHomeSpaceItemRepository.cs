@@ -1,4 +1,5 @@
-﻿using Homan.DAL.Entities;
+﻿using System;
+using Homan.DAL.Entities;
 
 namespace Homan.DAL.Repositories.Abstract
 {
@@ -6,5 +7,7 @@ namespace Homan.DAL.Repositories.Abstract
     {
         void Add(HomeSpaceItem homeSpaceItem);
         void Update(HomeSpaceItem homeSpaceItem);
+        void Remove(Guid id);
+        HomeSpaceItem Get(Guid id);
     }
 }

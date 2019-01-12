@@ -9,9 +9,11 @@ namespace Homan.DAL.Entities
         public string Description { get; set; }
         public bool IsCompleted { get; set; }
         public ItemType ItemType { get; set; }
-        
+        public DateTime CreatedOn { get; set; }
+
         public Guid? UserId { get; set; }
         public virtual User User { get; set; }
+
 
         public Guid HomeSpaceId { get; set; }
         public virtual HomeSpace HomeSpace { get; set; }

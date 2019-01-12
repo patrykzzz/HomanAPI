@@ -19,12 +19,30 @@ namespace Homan.BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Result CreateItem(HomeSpaceItemModel model)
+        public Result<HomeSpaceItemModel> CreateItem(HomeSpaceItemModel model)
         {
             try
             {
+                model.Id = Guid.NewGuid();
                 var entity = Mapper.Map<HomeSpaceItem>(model);
+                entity.CreatedOn = DateTime.UtcNow;
                 _homeSpaceItemRepository.Add(entity);
+                _unitOfWork.SaveChanges();
+                return Result<HomeSpaceItemModel>.Success(model);
+            }
+            catch (Exception ex)
+            {
+                return Result<HomeSpaceItemModel>.Fail();
+            }
+        }
+
+        public Result UpdateItem(HomeSpaceItemModel model)
+        {
+            try
+            {
+                var entity = _homeSpaceItemRepository.Get(model.Id);
+                Mapper.Map(model, entity);
+                _homeSpaceItemRepository.Update(entity);
                 _unitOfWork.SaveChanges();
                 return Result.Success();
             }
@@ -34,12 +52,11 @@ namespace Homan.BLL.Services
             }
         }
 
-        public Result UpdateItem(HomeSpaceItemModel model)
+        public Result RemoveItem(Guid itemId)
         {
             try
             {
-                var entity = Mapper.Map<HomeSpaceItem>(model);
-                _homeSpaceItemRepository.Update(entity);
+                _homeSpaceItemRepository.Remove(itemId);
                 _unitOfWork.SaveChanges();
                 return Result.Success();
             }

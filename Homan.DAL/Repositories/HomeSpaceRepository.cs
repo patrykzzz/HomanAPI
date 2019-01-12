@@ -18,12 +18,18 @@ namespace Homan.DAL.Repositories
 
         public HomeSpace GetById(Guid id)
         {
-            return _homanContext.HomeSpaces
+            var homeSpace = _homanContext.HomeSpaces
                 .Include(x => x.HomeSpaceItems)
                 .ThenInclude(x => x.User)
                 .Include(x => x.HomeSpaceUsers)
                 .ThenInclude(x => x.User)
                 .First(x => x.Id == id);
+
+            homeSpace.HomeSpaceItems = homeSpace.HomeSpaceItems
+                .OrderByDescending(x => x.CreatedOn)
+                .ToList();
+
+            return homeSpace;
         }
 
         public void Add(HomeSpace homeSpace)

@@ -93,11 +93,11 @@ namespace Homan.API.Controllers
         /// </summary>
         /// <param name="homeSpaceId"></param>
         /// <returns></returns>
-        [HttpDelete("api/homespaces")]
+        [HttpDelete("api/homespaces/{homeSpaceId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public IActionResult Remove([FromBody] Guid homeSpaceId)
+        public IActionResult Remove(Guid homeSpaceId)
         {
             if (!ModelState.IsValid)
             {
