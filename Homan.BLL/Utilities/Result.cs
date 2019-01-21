@@ -5,6 +5,11 @@
         public T Data { get; set; }
         public bool Succeeded { get; set; }
 
+        public Result()
+        {
+            
+        }
+
         private Result(T data, bool succeeded = true)
         {
             Data = data;

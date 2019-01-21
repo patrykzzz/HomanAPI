@@ -152,8 +152,6 @@ namespace Homan.API.Controllers
         /// <summary>
         /// Removes user from given Home Space
         /// </summary>
-        /// <param name="homeSpaceId"></param>
-        /// <param name="userToRemoveId"></param>
         /// <param name="webModel"></param>
         /// <returns></returns>
         [HttpDelete("api/homespaces/users")]

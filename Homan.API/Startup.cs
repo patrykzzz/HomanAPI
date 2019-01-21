@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Homan.API
@@ -46,7 +47,7 @@ namespace Homan.API
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 cfg.IncludeXmlComments(xmlPath);
             });
-            
+
             services.AddDbContext<HomanContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext"));
@@ -83,6 +84,8 @@ namespace Homan.API
 
             services.RegisterDalModule();
             services.RegisterBllModule();
+            services.AddSingleton<IConnectionMultiplexer, ConnectionMultiplexer>(x => 
+                ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisCache")));
 
             Mapper.Initialize(cfg =>
             {

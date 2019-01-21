@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Homan.BLL.Services
 {
-    internal class HomeSpaceService : IHomeSpaceService
+    public class HomeSpaceService : IHomeSpaceService
     {
         private readonly IHomeSpaceRepository _homeSpaceRepository;
         private readonly IUnitOfWork _unitOfWork;
