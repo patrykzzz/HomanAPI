@@ -36,7 +36,7 @@ namespace Homan.BLL.Tests.Services
         {
             // Arrange
             var entity = _fixture.Create<HomeSpace>();
-            _homeSpaceRepository.Setup(x => x.GetById(entity.Id))
+            _homeSpaceRepository.Setup(x => x.Get(entity.Id))
                 .Returns(entity);
 
             // Act
@@ -52,7 +52,7 @@ namespace Homan.BLL.Tests.Services
         public void GetHomeSpace_ForSomethingWrong_ShouldFail()
         {
             // Arrange
-            _homeSpaceRepository.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _homeSpaceRepository.Setup(x => x.Get(It.IsAny<Guid>()))
                 .Throws<Exception>();
 
             // Act

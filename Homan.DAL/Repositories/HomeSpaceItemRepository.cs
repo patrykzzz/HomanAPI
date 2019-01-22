@@ -5,7 +5,7 @@ using Homan.DAL.Repositories.Abstract;
 
 namespace Homan.DAL.Repositories
 {
-    internal class HomeSpaceItemRepository : IHomeSpaceItemRepository
+    internal class HomeSpaceItemRepository : RepositoryBase<HomeSpaceItem>, IHomeSpaceItemRepository
     {
         private readonly HomanContext _context;
 

@@ -2,7 +2,7 @@
 
 namespace Homan.DAL.Entities
 {
-    public class HomeSpaceItem
+    public class HomeSpaceItem : IEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

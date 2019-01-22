@@ -29,7 +29,7 @@ namespace Homan.BLL.Services
         {
             try
             {
-                var entity = _homeSpaceRepository.GetById(id);
+                var entity = _homeSpaceRepository.Get(id);
                 var model = Mapper.Map<HomeSpaceModel>(entity);
                 return Result<HomeSpaceModel>.Success(model);
             }
@@ -43,9 +43,9 @@ namespace Homan.BLL.Services
         {
             try
             {
-                var entity = Mapper.Map<HomeSpace>(homeSpace);
+                var entity = _homeSpaceRepository.Create();
+                Mapper.Map(homeSpace, entity);
                 entity.OwnerId = userId;
-                entity.Id = Guid.NewGuid();
                 entity.HomeSpaceUsers = new List<UserInHomeSpace>
                 {
                     new UserInHomeSpace
@@ -68,7 +68,7 @@ namespace Homan.BLL.Services
         {
             try
             {
-                var homeSpace = _homeSpaceRepository.GetById(homeSpaceId);
+                var homeSpace = _homeSpaceRepository.Get(homeSpaceId);
                 if(homeSpace.OwnerId != requestingUserId)
                 {
                     return Result.Fail();
@@ -135,7 +135,7 @@ namespace Homan.BLL.Services
         {
             try
             {
-                var homeSpace = _homeSpaceRepository.GetById(homeSpaceId);
+                var homeSpace = _homeSpaceRepository.Get(homeSpaceId);
                 if (homeSpace.OwnerId != requestingUserId)
                 {
                     return Result.Fail();

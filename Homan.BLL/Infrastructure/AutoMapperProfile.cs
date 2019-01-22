@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Homan.BLL.Models;
@@ -18,7 +17,9 @@ namespace Homan.BLL.Infrastructure
             CreateMap<HomeSpaceItem, HomeSpaceItemModel>();
 
             CreateMap<HomeSpaceItemModel, HomeSpaceItem>()
-                .ForMember(x => x.CreatedOn, o => o.Ignore());
+                .ForMember(x => x.CreatedOn, o => o.Ignore())
+                .ForMember(x => x.Name, o => o.Ignore())
+                .ForMember(x => x.HomeSpace, o => o.Ignore());
 
             CreateMap<HomeSpaceModel, HomeSpace>()
                 .ForMember(x => x.OwnerId, o => o.Ignore())

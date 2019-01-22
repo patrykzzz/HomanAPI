@@ -23,14 +23,14 @@ namespace Homan.BLL.Services
         {
             try
             {
-                model.Id = Guid.NewGuid();
-                var entity = Mapper.Map<HomeSpaceItem>(model);
+                var entity = _homeSpaceItemRepository.Create();
+                Mapper.Map(model, entity);
                 entity.CreatedOn = DateTime.UtcNow;
                 _homeSpaceItemRepository.Add(entity);
                 _unitOfWork.SaveChanges();
                 return Result<HomeSpaceItemModel>.Success(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Result<HomeSpaceItemModel>.Fail();
             }
@@ -46,7 +46,7 @@ namespace Homan.BLL.Services
                 _unitOfWork.SaveChanges();
                 return Result.Success();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Result.Fail();
             }
@@ -60,7 +60,7 @@ namespace Homan.BLL.Services
                 _unitOfWork.SaveChanges();
                 return Result.Success();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Result.Fail();
             }

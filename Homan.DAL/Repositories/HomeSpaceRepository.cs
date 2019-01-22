@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Homan.DAL.Repositories
 {
-    internal class HomeSpaceRepository : IHomeSpaceRepository
+    internal class HomeSpaceRepository : RepositoryBase<HomeSpace>, IHomeSpaceRepository
     {
         private readonly HomanContext _homanContext;
 
@@ -16,7 +16,7 @@ namespace Homan.DAL.Repositories
             _homanContext = homanContext;
         }
 
-        public HomeSpace GetById(Guid id)
+        public HomeSpace Get(Guid id)
         {
             var homeSpace = _homanContext.HomeSpaces
                 .Include(x => x.HomeSpaceItems)

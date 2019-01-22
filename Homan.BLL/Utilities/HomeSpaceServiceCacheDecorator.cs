@@ -29,7 +29,16 @@ namespace Homan.BLL.Utilities
 
         public Result RemoveHomeSpace(Guid homeSpaceId, Guid requestingUserId)
         {
-            return _target.RemoveHomeSpace(homeSpaceId, requestingUserId);
+            try
+            {
+                var database = _connectionMultiplexer.GetDatabase();
+                database.KeyDelete($"homespaces/{requestingUserId}");
+                return _target.RemoveHomeSpace(homeSpaceId, requestingUserId);
+            }
+            catch (Exception)
+            {
+                return Result.Fail();
+            }
         }
 
         public Result<IEnumerable<HomeSpaceModel>> GetHomeSpacesByUser(Guid userId)
@@ -46,7 +55,7 @@ namespace Homan.BLL.Utilities
                 database.StringSet($"homespaces/{userId}", JsonConvert.SerializeObject(result));
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Result<IEnumerable<HomeSpaceModel>>.Fail();
             }

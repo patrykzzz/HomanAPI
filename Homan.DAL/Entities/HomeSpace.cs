@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Homan.DAL.Entities
 {
-    public class HomeSpace
+    public class HomeSpace : IEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
