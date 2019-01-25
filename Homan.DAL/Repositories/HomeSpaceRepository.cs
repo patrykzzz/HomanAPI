@@ -47,6 +47,7 @@ namespace Homan.DAL.Repositories
             return _homanContext.HomeSpaces
                     .Include(x => x.HomeSpaceUsers)
                     .ThenInclude(x => x.User)
+                    .Include(x => x.HomeSpaceItems)
                     .Where(x => x.HomeSpaceUsers.Select(y => y.UserId)
                         .Contains(userId))
                     .ToList();

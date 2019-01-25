@@ -14,11 +14,11 @@ namespace Homan.API.Controllers
     [ApiController]
     public class HomeSpaceController : ControllerBase
     {
-        private readonly IHomeSpaceService _homeSpaceService;
+        private readonly IServicesFacade _serviceFacade;
 
-        public HomeSpaceController(IHomeSpaceService homeSpaceService)
+        public HomeSpaceController(IServicesFacade serviceFacade)
         {
-            _homeSpaceService = homeSpaceService;
+            _serviceFacade = serviceFacade;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Homan.API.Controllers
             {
                 return BadRequest();
             }
-            var result = _homeSpaceService.GetHomeSpace(id);
+            var result = _serviceFacade.GetHomeSpace(id);
             if (result.Succeeded)
             {
                 var model = Mapper.Map<HomeSpaceWebModel>(result.Data);
@@ -55,7 +55,7 @@ namespace Homan.API.Controllers
         public IActionResult GetByCurrentUser()
         {
             var userId = HttpContext.User.GetUserId();
-            var result = _homeSpaceService.GetHomeSpacesByUser(userId);
+            var result = _serviceFacade.GetHomeSpacesByUser(userId);
             if (result.Succeeded)
             {
                 return Ok(result.Data);
@@ -80,7 +80,7 @@ namespace Homan.API.Controllers
             }
             var model = Mapper.Map<HomeSpaceModel>(webModel);
             var userId = HttpContext.User.GetUserId();
-            var result = _homeSpaceService.Create(model, userId);
+            var result = _serviceFacade.CreateHomeSpace(model, userId);
             if (result.Succeeded)
             {
                 return Ok();
@@ -105,7 +105,7 @@ namespace Homan.API.Controllers
             }
 
             var userId = HttpContext.User.GetUserId();
-            var result = _homeSpaceService.RemoveHomeSpace(homeSpaceId, userId);
+            var result = _serviceFacade.RemoveHomeSpace(homeSpaceId, userId);
             if (result.Succeeded)
             {
                 return Ok();
@@ -132,7 +132,7 @@ namespace Homan.API.Controllers
             }
             var model = Mapper.Map<HomeSpaceInvitationModel>(webModel);
             model.InvitingUserId = HttpContext.User.GetUserId();
-            var result = _homeSpaceService.Invite(model);
+            var result = _serviceFacade.InviteUserToHomeSpace(model);
             if (result == InvitationResultModel.Succeeded)
             {
                 return Ok();
@@ -166,7 +166,7 @@ namespace Homan.API.Controllers
             }
 
             var requestingUserId = HttpContext.User.GetUserId();
-            var result = _homeSpaceService.RemoveUser(webModel.HomeSpaceId, webModel.UserToRemoveId, requestingUserId);
+            var result = _serviceFacade.RemoveUserFromHomeSpace(webModel.HomeSpaceId, webModel.UserToRemoveId, requestingUserId);
             if (!result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

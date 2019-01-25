@@ -9,11 +9,11 @@ namespace Homan.API.Controllers
 {
     public class AuthorizationController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IServicesFacade _serviceFacade;
 
-        public AuthorizationController(IUserService userService)
+        public AuthorizationController(IServicesFacade serviceFacade)
         {
-            _userService = userService;
+            _serviceFacade = serviceFacade;
         }
 
         [HttpPost("api/register")]
@@ -29,7 +29,7 @@ namespace Homan.API.Controllers
             }
 
             var model = Mapper.Map<RegistrationRequestModel>(webModel);
-            var result = _userService.Register(model);
+            var result = _serviceFacade.RegisterUser(model);
 
             if (result == RegistrationResponseType.Ok)
             {
@@ -55,7 +55,7 @@ namespace Homan.API.Controllers
             }
 
             var model = Mapper.Map<LoginRequestModel>(webModel);
-            var result = _userService.Login(model);
+            var result = _serviceFacade.LoginUser(model);
 
             if (result.Succeeded)
             {

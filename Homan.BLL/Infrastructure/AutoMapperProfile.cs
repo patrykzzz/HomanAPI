@@ -17,6 +17,7 @@ namespace Homan.BLL.Infrastructure
             CreateMap<HomeSpaceItem, HomeSpaceItemModel>();
 
             CreateMap<HomeSpaceItemModel, HomeSpaceItem>()
+                .ForMember(x => x.Id, o => o.Ignore())
                 .ForMember(x => x.CreatedOn, o => o.Ignore())
                 .ForMember(x => x.Name, o => o.Ignore())
                 .ForMember(x => x.HomeSpace, o => o.Ignore());

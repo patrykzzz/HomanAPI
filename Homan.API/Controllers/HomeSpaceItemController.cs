@@ -3,6 +3,7 @@ using AutoMapper;
 using Homan.API.Models;
 using Homan.BLL.Models;
 using Homan.BLL.Services.Abstract;
+using Homan.BLL.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,11 @@ namespace Homan.API.Controllers
     [ApiController]
     public class HomeSpaceItemController : ControllerBase
     {
-        private readonly IHomeSpaceItemService _homeSpaceItemService;
+        private readonly IServicesFacade _servicesFacade;
 
-        public HomeSpaceItemController(IHomeSpaceItemService homeSpaceItemService)
+        public HomeSpaceItemController(IServicesFacade servicesFacade)
         {
-            _homeSpaceItemService = homeSpaceItemService;
+            _servicesFacade = servicesFacade;
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Homan.API.Controllers
                 return BadRequest();
             }
             var model = Mapper.Map<HomeSpaceItemModel>(webModel);
-            var result = _homeSpaceItemService.CreateItem(model);
+            var result = _servicesFacade.CreateItem(model);
 
             if (result.Succeeded)
             {
@@ -64,7 +65,7 @@ namespace Homan.API.Controllers
             }
 
             var model = Mapper.Map<HomeSpaceItemModel>(webModel);
-            var result = _homeSpaceItemService.UpdateItem(model);
+            var result = _servicesFacade.UpdateItem(model);
 
             if (result.Succeeded)
             {
@@ -90,7 +91,8 @@ namespace Homan.API.Controllers
                 return BadRequest();
             }
 
-            var result = _homeSpaceItemService.RemoveItem(itemId);
+            var userId = User.GetUserId();
+            var result = _servicesFacade.RemoveItem(itemId, userId);
 
             if (result.Succeeded)
             {

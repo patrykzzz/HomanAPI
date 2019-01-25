@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Homan.BLL.ChainOfResponsibility;
 using Homan.BLL.Services;
 using Homan.BLL.Services.Abstract;
 using Homan.BLL.Utilities;
@@ -16,6 +17,16 @@ namespace Homan.BLL.Infrastructure
             serviceCollection.AddTransient<IUserService, UserService>();
             serviceCollection.AddTransient<ITokenFactory, TokenFactory>();
             serviceCollection.AddTransient<IHomeSpaceService, HomeSpaceServiceCacheDecorator>();
+            serviceCollection.AddTransient<IServicesFacade, ServicesFacade>();
+
+            // Chain of responsibility registration
+            serviceCollection.AddTransient<RefreshHomeSpaceCacheHandler>();
+
+            serviceCollection.AddTransient<DeleteHomeSpaceItemHandler, DeleteHomeSpaceItemFromDatabaseHandler>(cfg =>
+                new DeleteHomeSpaceItemFromDatabaseHandler(cfg.GetService<IHomeSpaceItemService>())
+                {
+                    Successor = cfg.GetService<RefreshHomeSpaceCacheHandler>()
+                });
         }
     }
 }
